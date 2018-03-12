@@ -50,7 +50,7 @@ if __name__ == '__main__':
       print 'climb       ' , gpsd.fix.climb
       print 'track       ' , gpsd.fix.track
       print 'mode        ' , gpsd.fix.mode
-      print
+      #print
       print 'sats        ' , gpsd.satellites
  
       time.sleep(5) #set to whatever
