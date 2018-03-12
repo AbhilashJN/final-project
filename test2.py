@@ -49,7 +49,7 @@ if __name__ == '__main__':
       print 'speed (m/s) ' , gpsd.fix.speed
       print 'climb       ' , gpsd.fix.climb
       print 'track       ' , gpsd.fix.track
-      print 'mode        ' , gpsd.fix.mode
+      #print 'mode        ' , gpsd.fix.mode
       #print
       print 'sats        ' , gpsd.satellites
  
