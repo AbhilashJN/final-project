@@ -13,6 +13,10 @@ from math import radians, cos, sin, asin, sqrt
 coordsArray=[]
 def writeData():
 	call(['python','writeOneCoord.py'])
+
+def deleteLocation(lat,lng):
+	call(['python','eraser.py',str(lat),str(lng)])
+	
 	
 def loadData():
 	global coordsArray
@@ -38,6 +42,8 @@ gpsd = None #seting the global variable
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(18,GPIO.RISING)
+GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(21,GPIO.RISING)
 
 class GpsPoller(threading.Thread):
   def __init__(self):
@@ -74,8 +80,24 @@ if __name__ == '__main__':
 	    break
 	else:
 	    continue
+
+      elif btnP==2:
+	btnP=0
+	while(not (gpsd.fix.latitude>0)):
+		print 'wait'
+	lat=gpsd.fix.latitude
+	lng=gpsd.fix.longitude
+	t2=threading.Thread(target=deleteLocation,args=(lat,lng))
+	t2.start()
+	t2.join()
+	time.sleep(1)
+	coordsArray=[]
+	loadData()
+	print 'erased'
+	time.sleep(2)
+
       else:
-	print coordsArray
+	#print coordsArray
         if gpsd.fix.latitude>0:
 	  print gpsd.fix.latitude
           for coord in coordsArray:
@@ -84,6 +106,9 @@ if __name__ == '__main__':
 
       if GPIO.event_detected(18):
         btnP=1
+
+      if GPIO.event_detected(21):
+	btnP=2
 
   except (KeyboardInterrupt, SystemExit): #when you press ctrl+c
     print "\nKilling Thread..."
