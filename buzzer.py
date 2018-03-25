@@ -1,17 +1,18 @@
 import time
-import RPi.GPIO as gpio
+import RPi.GPIO as GPIO
 
-gpio.setwarnings(False)
-gpio.cleanup()
-gpio.setmode(gpio.BCM)
-gpio.setup(21,gpio.OUT)
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(21,GPIO.OUT)
 try:
-    while True:
-        gpio.output(21,False)
-        time.sleep(0.5)
-        gpio.output(21,True)
-        time.sleep(0.5)
-except KeyboardInterrupt:
-        gpio.cleanup()
-        exit
+	for i in xrange(0,5):
+		#p=GPIO.PWM(21,261)
+		#p.start(50)
+		GPIO.output(21,1)
+		time.sleep(1)
+		GPIO.output(21,0)
+		time.sleep(0)
+except:
+	print 'except'
+
+finally:
+	GPIO.cleanup();
